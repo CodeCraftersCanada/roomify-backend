@@ -9,7 +9,6 @@ const app = express();
 const usersRouter = require('./routes/userRoutes');
 //const {once} = require("./config/db");
 
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -20,7 +19,7 @@ app.use('/api/v1', usersRouter);
 
 
 process.env.TZ = 'UTC';
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 //TODO: uncomment this code to use Mongoose
 /*once('open', () => {
     app.listen(PORT, () => {
