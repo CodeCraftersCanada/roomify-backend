@@ -1,11 +1,9 @@
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 
-const username = 'username';
-const password = 'password';
-const url = `mongodb://${username}:${password}@127.0.0.1/`;
-
 // Generate DB connection
-mongoose.connect(url, {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
