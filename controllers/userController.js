@@ -8,21 +8,6 @@ admin.initializeApp({
     credential: admin.credential.cert(credential)
 });
 
-exports.getUsers = async (req, res) => {
-
-    res.send('Invoked USERS services');
-    /*try {
-        const userFound = await User.find();
-
-        if (!userFound) {
-            res.status(404).send({message: 'User not found'});
-        }
-        res.status(200).send({user: userFound});
-    } catch (error) {
-        res.status(500).send({message: 'Error had occurred'});
-    }*/
-};
-
 exports.signUp = async (req, res) => {
     try {
         //creating new user
@@ -108,6 +93,64 @@ exports.login = async (req, res) => {
             status: false,
             message: 'Login failed!!!',
             error: error.message
+        });
+    }
+};
+
+exports.getUsers = async (req, res) => {
+    try {
+        const userFound = await User.find();
+
+        if (!userFound) {
+            res.status(404).send({
+                status: false,
+                message: 'User not found'
+            });
+        }
+        res.status(200).send({
+            status: true,
+            user: userFound
+        });
+    } catch (error) {
+        res.status(500).send({
+            status: false,
+            message: error.message
+        });
+    }
+};
+
+exports.editUser = async (req, res) => {
+    const { uid, email, password, userType, firstname, lastname, phone } = req.body;
+
+    try {
+        // Update user information in MongoDB
+        const updatedUser = await User.findOneAndUpdate(
+            { uid: uid },
+            {
+                user_type_id: userType,
+                firstname: firstname,
+                lastname: lastname,
+                phone: phone
+            },
+            { new: true } // Return the updated document
+        ).populate('user_type_id');
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                status: false,
+                message: 'User not found.',
+            });
+        }
+
+        res.status(200).json({
+            status: true,
+            message: 'User updated successfully!',
+            user: updatedUser,
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            message: error.message
         });
     }
 };

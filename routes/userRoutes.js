@@ -8,11 +8,10 @@ router.get('/', function (req, res, next) {
     res.send('respond with a resource');
 });
 
-router.get('/users', userController.getUsers);
-
-
-/* USER Authentication. */
 router.post('/signup', userController.signUp);
 router.post('/login', userController.login);
+
+router.get('/users', userController.getUsers);
+router.put('/edit-user', userController.editUser);
 
 module.exports = router;
