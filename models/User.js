@@ -22,16 +22,21 @@ const userSchema = new mongoose.Schema({
 		ref: "UserType",
 		required: true,
 	},
-    firstname: {
-        type: String,
-    },
-    lastname: {
+    fullname: {
         type: String,
     },
     phone: {
         type: String,
     },
+    enabled: {
+        type: Number,
+        default: 1,
+    },
     created_at: {
+		type: Date,
+		default: Date.now,
+	},
+    updated_at: {
 		type: Date,
 		default: Date.now,
 	},

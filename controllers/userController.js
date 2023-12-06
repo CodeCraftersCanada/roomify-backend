@@ -8,13 +8,15 @@ admin.initializeApp({
     credential: admin.credential.cert(credential)
 });
 
-exports.signUp = async (req, res) => {
+exports.createUser = async (req, res) => {
     try {
         //creating new user
         const user = {
             email: req.body.email,
             password: req.body.password,
             userType: req.body.user_type_id,
+            fullname: req.body.fullname,
+            phone: req.body.phone
         }
 
         const userResponse = await admin.auth().createUser({
@@ -29,7 +31,10 @@ exports.signUp = async (req, res) => {
             uid: userResponse.uid,
             email: user.email,
             password: user.password,
-            user_type_id: user.userType
+            user_type_id: user.userType,
+            fullname: user.fullname,
+            phone: user.phone,
+            enabled: 1
         });
 
         res.status(200).json({
@@ -42,7 +47,7 @@ exports.signUp = async (req, res) => {
         console.error("Error adding user:", error);
         res.status(500).json({
             status: false,
-            message: "Internal Server Error",
+            message: error.message
         });
     }
 };
@@ -120,17 +125,23 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.editUser = async (req, res) => {
-    const { uid, email, password, userType, firstname, lastname, phone } = req.body;
+    const { uid, email, password, userType, fullname, phone, enabled } = req.body;
 
     try {
+        // Update password in Firebase
+        await admin.auth().updateUser(uid, {
+            password: password,
+        });
+
         // Update user information in MongoDB
         const updatedUser = await User.findOneAndUpdate(
             { uid: uid },
             {
                 user_type_id: userType,
-                firstname: firstname,
-                lastname: lastname,
-                phone: phone
+                fullname: fullname,
+                phone: phone,
+                enabled: enabled,
+                password: password ? await bcrypt.hash(password, 10) : undefined,
             },
             { new: true } // Return the updated document
         ).populate('user_type_id');
@@ -146,6 +157,34 @@ exports.editUser = async (req, res) => {
             status: true,
             message: 'User updated successfully!',
             user: updatedUser,
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            message: error.message
+        });
+    }
+};
+
+exports.getUserByUid = async (req, res) => {
+    const { uid } = req.params;
+
+    try {
+        // Retrieve the user from MongoDB based on the Firebase UID
+        const foundUser = await User
+            .findOne({ uid: uid })
+            .populate('user_type_id');
+
+        if (!foundUser) {
+            return res.status(404).json({
+                status: false,
+                message: 'User not found.',
+            });
+        }
+
+        res.status(200).json({
+            status: true,
+            user: foundUser,
         });
     } catch (error) {
         res.status(500).json({
