@@ -10,6 +10,8 @@ const app = express();
 // ROUTES
 const usersRouter = require('./routes/userRoutes');
 const amenitiesRouter = require('./routes/amenitiesRoutes');
+const propertyRouter = require('./routes/propertyRoutes');
+
 const {once} = require("./config/db");
 
 app.use(logger('dev'));
@@ -20,6 +22,7 @@ app.use(cookieParser());
 // API ENDPOINTS
 app.use('/api/v1', usersRouter);
 app.use('/api/v1', amenitiesRouter);
+app.use('/api/v1', propertyRouter);
 
 process.env.TZ = 'UTC';
 const PORT = process.env.PORT || 3001;
