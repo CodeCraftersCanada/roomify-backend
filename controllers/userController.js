@@ -61,7 +61,12 @@ exports.createUser = async (req, res) => {
             password: req.body.password,
             userType: req.body.user_type_id,
             fullname: req.body.fullname,
-            phone: req.body.phone
+            phone: req.body.phone,
+            imagePath: req.body.image_path,
+            college: req.body.college,
+            address: req.body.address,
+            latitude: req.body.latitude,
+            longitude: req.body.longtitude,
         }
 
         console.log(user);
@@ -73,6 +78,11 @@ exports.createUser = async (req, res) => {
             user_type_id: user.userType,
             fullname: user.fullname,
             phone: user.phone,
+            image_path: user.imagePath,
+            college: user.college,
+            address: user.address,
+            latitude: user.latitude,
+            longitude: user.longtitude,
             enabled: 1
         });
 
@@ -106,7 +116,9 @@ exports.login = async (req, res) => {
         // Retrieve the user from MongoDB based on the Firebase UID
         const foundUser = await User
             .findOne({ uid: fireBaseUser.uid })
-            .populate('user_type_id');
+            .populate('user_type_id')
+            .populate("properties")
+            ;
 
         if (!foundUser) {
             return res.status(401).json({
@@ -142,7 +154,10 @@ exports.login = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
     try {
-        const userFound = await User.find();
+        const userFound = await User.find()
+            .populate("user_type_id")
+            .populate("properties")
+            ;
 
         if (!userFound) {
             res.status(404).send({
@@ -211,7 +226,9 @@ exports.getUserByUid = async (req, res) => {
         // Retrieve the user from MongoDB based on the Firebase UID
         const foundUser = await User
             .findOne({ uid: uid })
-            .populate('user_type_id');
+            .populate("user_type_id")
+            .populate("properties")
+            ;
 
         if (!foundUser) {
             return res.status(404).json({

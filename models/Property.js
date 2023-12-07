@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const propertySchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Assuming you have a User model
+        ref: 'User',
         required: true,
     },
     property_status_id: {
@@ -50,10 +50,10 @@ const propertySchema = new mongoose.Schema({
     country: String,
     postal_code: String,
     latitude: {
-        type: Number,
+        type: Schema.Types.Number,
     },
-    longtitude: {
-        type: Number,
+    longitude: {
+        type: Schema.Types.Number,
     },
     created_at: {
 		type: Date,
@@ -70,7 +70,7 @@ const propertySchema = new mongoose.Schema({
     photos: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'PropertyPhotos',
-    }],
+    }]
 });
 
 module.exports = mongoose.model('Property', propertySchema);

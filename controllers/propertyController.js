@@ -1,6 +1,6 @@
-// controllers/PropertyController.js
 const Property = require('../models/Property');
 const PropertyType = require("../models/PropertyStatus");
+const User = require("../models/User");
 
 exports.createProperty = async (req, res) => {
     const {
@@ -52,10 +52,28 @@ exports.createProperty = async (req, res) => {
             longitude
         });
 
-        res.status(201).json({
-            status: true,
-            property,
-        });
+        try {
+            const updatedUser = await User.findByIdAndUpdate(
+                user_id,
+                { $push: { properties: property._id } },
+                { new: true }
+            );
+
+            console.log("Property and Users relationship established successfully.");
+
+            res.status(200).json({
+                status: true,
+                message: 'Property created successfully!',
+                property: property,
+                user: updatedUser
+            });
+        } catch (updateErr) {
+            console.error(updateErr);
+            res.status(500).json({
+                success: false,
+                message: "Error creating property",
+            });
+        }
     } catch (error) {
         res.status(500).json({
             status: false,
@@ -117,7 +135,26 @@ exports.getPropertyById = async (req, res) => {
 
 exports.updatePropertyById = async (req, res) => {
     const propertyId = req.params.id;
-    const { name, description, pricing, address, latitude, longitude } = req.body;
+    const {
+        name,
+        description,
+        property_type,
+        property_name,
+        shared_type,
+        shared_name,
+        guest_number,
+        bedroom_number,
+        beds_number,
+        bedroom_locked,
+        price,
+        address1,
+        address2,
+        city,
+        province,
+        country,
+        postal_code,
+        latitude,
+        longitude } = req.body;
 
     try {
         const updatedProperty = await Property.findByIdAndUpdate(
@@ -125,10 +162,23 @@ exports.updatePropertyById = async (req, res) => {
             {
                 name,
                 description,
-                pricing,
-                address,
+                property_type,
+                property_name,
+                shared_type,
+                shared_name,
+                guest_number,
+                bedroom_number,
+                beds_number,
+                bedroom_locked,
+                price,
+                address1,
+                address2,
+                city,
+                province,
+                country,
+                postal_code,
                 latitude,
-                longitude,
+                longitude
             },
             { new: true } // Return the updated document
         );

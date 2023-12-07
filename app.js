@@ -23,7 +23,7 @@ app.use('/api/v1', usersRouter);
 app.use('/api/v1', propertyRouter);
 
 process.env.TZ = 'UTC';
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 // Start the server
 app.listen(PORT, () => {
