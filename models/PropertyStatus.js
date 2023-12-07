@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const propertyTypeSchema = new Schema({
+const propertyStatusSchema = new Schema({
     _id: {
         type: Number,
         required: true,
@@ -14,6 +14,6 @@ const propertyTypeSchema = new Schema({
     }
 });
 
-const PropertyType = mongoose.model("PropertyType", propertyTypeSchema);
+const PropertyStatus = mongoose.model("PropertyStatus", propertyStatusSchema);
 
-module.exports = PropertyType;
+module.exports = PropertyStatus;

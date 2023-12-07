@@ -12,6 +12,7 @@ router.post('/login', userController.login);
 router.get('/users', userController.getUsers);
 router.get('/user/:uid', userController.getUserByUid);
 
+router.post('/signup', userController.signUp);
 router.post('/create-user', userController.createUser);
 router.put('/edit-user', userController.editUser);
 

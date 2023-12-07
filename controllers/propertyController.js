@@ -1,20 +1,55 @@
 // controllers/PropertyController.js
 const Property = require('../models/Property');
-const PropertyType = require("../models/PropertyType");
+const PropertyType = require("../models/PropertyStatus");
 
 exports.createProperty = async (req, res) => {
-    const { user_id, property_type_id, name, description, pricing, address, latitude, longitude } = req.body;
+    const {
+        user_id,
+        property_status_id,
+        name,
+        description,
+        property_type,
+        property_name,
+        shared_type,
+        shared_name,
+        guest_number,
+        bedroom_number,
+        beds_number,
+        bedroom_locked,
+        price,
+        address1,
+        address2,
+        city,
+        province,
+        country,
+        postal_code,
+        latitude,
+        longitude
+    } = req.body;
 
     try {
         const property = await Property.create({
             user_id,
-            property_type_id,
+            property_status_id,
             name,
             description,
-            pricing,
-            address,
+            property_type,
+            property_name,
+            shared_type,
+            shared_name,
+            guest_number,
+            bedroom_number,
+            beds_number,
+            bedroom_locked,
+            price,
+            address1,
+            address2,
+            city,
+            province,
+            country,
+            postal_code,
             latitude,
-            longitude,
+            longitude
         });
 
         res.status(201).json({
@@ -33,7 +68,10 @@ exports.getAllProperties = async (req, res) => {
     try {
         const properties = await Property.find()
             .populate('user_id')
-            .populate('property_type_id');
+            .populate('property_status_id')
+            .populate('amenities')
+            .populate('photos')
+            ;
         res.status(200).json({
             status: true,
             properties,
@@ -51,7 +89,12 @@ exports.getPropertyById = async (req, res) => {
     const propertyId = req.params.id;
 
     try {
-        const property = await Property.findById(propertyId);
+        const property = await Property.findById(propertyId)
+            .populate('user_id')
+            .populate('property_status_id')
+            .populate('amenities')
+            .populate('photos')
+            ;
 
         if (!property) {
             return res.status(404).json({

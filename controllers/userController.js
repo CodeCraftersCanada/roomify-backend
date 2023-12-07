@@ -8,7 +8,7 @@ admin.initializeApp({
     credential: admin.credential.cert(credential)
 });
 
-exports.createUser = async (req, res) => {
+exports.signUp = async (req, res) => {
     try {
         //creating new user
         const user = {
@@ -41,6 +41,44 @@ exports.createUser = async (req, res) => {
             status: true,
             message: "User created successfully!!",
             firebaseUser: userResponse,
+            user: savedUser
+        });
+    } catch (error) {
+        console.error("Error adding user:", error);
+        res.status(500).json({
+            status: false,
+            message: error.message
+        });
+    }
+};
+
+exports.createUser = async (req, res) => {
+    try {
+        //creating new user
+        const user = {
+            uid: req.body.uid,
+            email: req.body.email,
+            password: req.body.password,
+            userType: req.body.user_type_id,
+            fullname: req.body.fullname,
+            phone: req.body.phone
+        }
+
+        console.log(user);
+        // Saving user to MongoDB
+        const savedUser = await User.create({
+            uid: user.uid,
+            email: user.email,
+            password: user.password,
+            user_type_id: user.userType,
+            fullname: user.fullname,
+            phone: user.phone,
+            enabled: 1
+        });
+
+        res.status(200).json({
+            status: true,
+            message: "User created successfully!!",
             user: savedUser
         });
     } catch (error) {
