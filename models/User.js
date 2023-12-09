@@ -59,6 +59,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Property',
     }],
+    bookings: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Booking',
+    }],
 });
 
 // Before saving the user, hash the password

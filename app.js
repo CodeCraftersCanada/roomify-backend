@@ -10,6 +10,7 @@ const app = express();
 // ROUTES
 const usersRouter = require('./routes/userRoutes');
 const propertyRouter = require('./routes/propertyRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 
 const {once} = require("./config/db");
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 // API ENDPOINTS
 app.use('/api/v1', usersRouter);
 app.use('/api/v1', propertyRouter);
+app.use('/api/v1', bookingRoutes);
 
 process.env.TZ = 'UTC';
 const PORT = process.env.PORT || 3002;

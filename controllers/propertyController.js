@@ -89,6 +89,7 @@ exports.getAllProperties = async (req, res) => {
             .populate('property_status_id')
             .populate('amenities')
             .populate('photos')
+            .populate('bookings')
             ;
         res.status(200).json({
             status: true,
@@ -112,6 +113,7 @@ exports.getPropertyById = async (req, res) => {
             .populate('property_status_id')
             .populate('amenities')
             .populate('photos')
+            .populate('bookings')
             ;
 
         if (!property) {
@@ -190,10 +192,11 @@ exports.updatePropertyById = async (req, res) => {
             });
         }
 
+
         res.status(200).json({
             status: true,
             message: 'Property updated successfully!',
-            property: updatedProperty,
+            property: updatedProperty
         });
     } catch (error) {
         res.status(500).json({

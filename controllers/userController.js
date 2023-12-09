@@ -118,6 +118,7 @@ exports.login = async (req, res) => {
             .findOne({ uid: fireBaseUser.uid })
             .populate('user_type_id')
             .populate("properties")
+            .populate("bookings")
             ;
 
         if (!foundUser) {
@@ -157,6 +158,7 @@ exports.getUsers = async (req, res) => {
         const userFound = await User.find()
             .populate("user_type_id")
             .populate("properties")
+            .populate("bookings")
             ;
 
         if (!userFound) {
@@ -228,6 +230,7 @@ exports.getUserByUid = async (req, res) => {
             .findOne({ uid: uid })
             .populate("user_type_id")
             .populate("properties")
+            .populate("bookings")
             ;
 
         if (!foundUser) {

@@ -70,6 +70,10 @@ const propertySchema = new mongoose.Schema({
     photos: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'PropertyPhotos',
+    }],
+    bookings: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Booking',
     }]
 });
 
