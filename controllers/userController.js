@@ -157,7 +157,13 @@ exports.login = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
     try {
-        const userFound = await User.find()
+
+        const { user_type_id } = req.query;
+
+        // Construct the filter based on the presence of user_type_id
+        const filter = user_type_id ? { user_type_id } : {};
+
+        const userFound = await User.find(filter)
             .populate("user_type_id")
             .populate("properties")
             .populate("bookings")
