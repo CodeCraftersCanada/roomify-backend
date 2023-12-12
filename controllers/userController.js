@@ -158,10 +158,15 @@ exports.login = async (req, res) => {
 exports.getUsers = async (req, res) => {
     try {
 
-        const { user_type_id } = req.query;
+        const { user_type_id, verified } = req.query;
 
-        // Construct the filter based on the presence of user_type_id
-        const filter = user_type_id ? { user_type_id } : {};
+        const filter = {};
+        if (user_type_id) {
+            filter.user_type_id = user_type_id;
+        }
+        if (verified !== undefined) {
+            filter.verified = verified;
+        }
 
         const userFound = await User.find(filter)
             .populate("user_type_id")
@@ -175,6 +180,7 @@ exports.getUsers = async (req, res) => {
                 message: 'User not found'
             });
         }
+        
         res.status(200).send({
             status: true,
             user: userFound
