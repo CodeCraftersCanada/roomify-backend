@@ -6,6 +6,7 @@ exports.createProperty = async (req, res) => {
     const {
         user_id,
         property_status_id,
+        enabled,
         name,
         description,
         property_type,
@@ -31,6 +32,7 @@ exports.createProperty = async (req, res) => {
         const property = await Property.create({
             user_id,
             property_status_id,
+            enabled,
             name,
             description,
             property_type,
@@ -140,6 +142,7 @@ exports.updatePropertyById = async (req, res) => {
     const {
         name,
         description,
+        enabled,
         property_type,
         property_name,
         shared_type,
@@ -164,6 +167,7 @@ exports.updatePropertyById = async (req, res) => {
             {
                 name,
                 description,
+                enabled,
                 property_type,
                 property_name,
                 shared_type,

@@ -13,6 +13,10 @@ const propertySchema = new mongoose.Schema({
         ref: "PropertyStatus",
         required: true,
     },
+    enabled: {
+        type: Number,
+        default: 1,
+    },
     name: {
         type: String,
         required: true,

@@ -34,7 +34,8 @@ exports.signUp = async (req, res) => {
             user_type_id: user.userType,
             fullname: user.fullname,
             phone: user.phone,
-            enabled: 1
+            enabled: 1,
+            verified: 0
         });
 
         res.status(200).json({
@@ -66,7 +67,7 @@ exports.createUser = async (req, res) => {
             college: req.body.college,
             address: req.body.address,
             latitude: req.body.latitude,
-            longitude: req.body.longtitude,
+            longitude: req.body.longitude,
         }
 
         console.log(user);
@@ -82,8 +83,9 @@ exports.createUser = async (req, res) => {
             college: user.college,
             address: user.address,
             latitude: user.latitude,
-            longitude: user.longtitude,
-            enabled: 1
+            longitude: user.longitude,
+            enabled: 1,
+            verified: 0
         });
 
         res.status(200).json({
@@ -180,23 +182,43 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.editUser = async (req, res) => {
-    const { uid, email, password, userType, fullname, phone, enabled } = req.body;
+    const user = {
+        uid: req.body.uid,
+        email: req.body.email,
+        password: req.body.password,
+        userType: req.body.user_type_id,
+        fullname: req.body.fullname,
+        phone: req.body.phone,
+        imagePath: req.body.image_path,
+        college: req.body.college,
+        address: req.body.address,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
+        verified: req.body.verified
+    }
 
+    console.log(user);
     try {
         // Update password in Firebase
-        await admin.auth().updateUser(uid, {
-            password: password,
+        await admin.auth().updateUser(user.uid, {
+            password: user.password,
         });
 
         // Update user information in MongoDB
         const updatedUser = await User.findOneAndUpdate(
-            { uid: uid },
+            { uid: user.uid },
             {
-                user_type_id: userType,
-                fullname: fullname,
-                phone: phone,
-                enabled: enabled,
-                password: password ? await bcrypt.hash(password, 10) : undefined,
+                user_type_id: user.userType,
+                fullname: user.fullname,
+                phone: user.phone,
+                enabled: user.enabled,
+                verified: user.verified,
+                image_path: user.imagePath,
+                college: user.college,
+                address: user.address,
+                latitude: user.latitude,
+                longitude: user.longitude,
+                password: user.password ? await bcrypt.hash(user.password, 10) : undefined,
             },
             { new: true } // Return the updated document
         ).populate('user_type_id');

@@ -8,7 +8,7 @@ const propertyPhotosSchema = new Schema({
         required: true,
     },
     photo_id: {
-        type: Number,
+        type: String,
         required: true,
     },
     path: String,
