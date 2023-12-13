@@ -22,12 +22,37 @@ exports.sendRequestInfo = async (req, res) => {
             subject: 'Notification: Request Info',
             html: `
                 <html>
+                    <head>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f4;
+                                padding: 20px;
+                            }
+                            .container {
+                                max-width: 600px;
+                                margin: 0 auto;
+                                background-color: #fff;
+                                padding: 20px;
+                                border-radius: 10px;
+                                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                            }
+                            h2 {
+                                color: #333;
+                            }
+                            p {
+                                color: #555;
+                            }
+                        </style>
+                    </head>
                     <body>
-                        <h4>Hello,</h4>
-                        <p>${fullname} with email ${from_email} would like to request information regarding the property you listed.</p>
-                        <p>${fullname} can be reached through ${phone} for more details.</p>
-                        <p>Best regards,</p>
-                        <p>Admin</p>
+                        <div class="container">
+                            <h2>Hello,</h2>
+                            <p>${fullname} with email ${from_email} would like to request information regarding the property you listed.</p>
+                            <p>${fullname} can be reached through ${phone} for more details.</p>
+                            <p>Best regards,</p>
+                            <p>Your Name</p>
+                        </div>
                     </body>
                 </html>
             `,
