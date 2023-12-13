@@ -180,7 +180,7 @@ exports.getUsers = async (req, res) => {
                 message: 'User not found'
             });
         }
-        
+
         res.status(200).send({
             status: true,
             user: userFound
@@ -263,9 +263,15 @@ exports.getUserByUid = async (req, res) => {
         const foundUser = await User
             .findOne({ uid: uid })
             .populate("user_type_id")
-            .populate("properties")
             .populate("bookings")
-            ;
+            .populate({
+                path: "properties",
+                populate: {
+                    path: "bookings",
+                    model: "Booking"
+                }
+            })
+            .exec();
 
         if (!foundUser) {
             return res.status(404).json({
@@ -274,9 +280,19 @@ exports.getUserByUid = async (req, res) => {
             });
         }
 
+        // Count the number of properties and bookings
+        const propertyCount = foundUser.properties.length;
+
+        let totalBookings = 0;
+        foundUser.properties.forEach(property => {
+            totalBookings += property.bookings.length;
+        });
+
         res.status(200).json({
             status: true,
             user: foundUser,
+            propertyCount: propertyCount,
+            propertyBookingCount: totalBookings
         });
     } catch (error) {
         res.status(500).json({
