@@ -12,6 +12,7 @@ const app = express();
 const usersRouter = require("./routes/userRoutes");
 const propertyRouter = require("./routes/propertyRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
+const emailRoutes = require("./routes/emailRoutes");
 
 const { once } = require("./config/db");
 
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use("/api/v1", usersRouter);
 app.use("/api/v1", propertyRouter);
 app.use("/api/v1", bookingRoutes);
+app.use("/api/v1", emailRoutes);
 
 process.env.TZ = "UTC";
 const PORT = process.env.PORT || 3002;
