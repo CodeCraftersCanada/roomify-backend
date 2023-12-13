@@ -7,6 +7,8 @@ exports.createProperty = async (req, res) => {
         user_id,
         property_status_id,
         enabled,
+        verified,
+        is_available,
         name,
         description,
         property_type,
@@ -16,6 +18,7 @@ exports.createProperty = async (req, res) => {
         guest_number,
         bedroom_number,
         beds_number,
+        bathroom_number,
         bedroom_locked,
         price,
         address1,
@@ -33,6 +36,8 @@ exports.createProperty = async (req, res) => {
             user_id,
             property_status_id,
             enabled,
+            verified,
+            is_available,
             name,
             description,
             property_type,
@@ -42,6 +47,7 @@ exports.createProperty = async (req, res) => {
             guest_number,
             bedroom_number,
             beds_number,
+            bathroom_number,
             bedroom_locked,
             price,
             address1,
@@ -105,7 +111,6 @@ exports.getAllProperties = async (req, res) => {
     }
 };
 
-
 exports.getPropertyById = async (req, res) => {
     const propertyId = req.params.id;
 
@@ -143,6 +148,8 @@ exports.updatePropertyById = async (req, res) => {
         name,
         description,
         enabled,
+        verified,
+        is_available,
         property_type,
         property_name,
         shared_type,
@@ -150,6 +157,7 @@ exports.updatePropertyById = async (req, res) => {
         guest_number,
         bedroom_number,
         beds_number,
+        bathroom_number,
         bedroom_locked,
         price,
         address1,
@@ -168,6 +176,8 @@ exports.updatePropertyById = async (req, res) => {
                 name,
                 description,
                 enabled,
+                verified,
+                is_available,
                 property_type,
                 property_name,
                 shared_type,
@@ -175,6 +185,7 @@ exports.updatePropertyById = async (req, res) => {
                 guest_number,
                 bedroom_number,
                 beds_number,
+                bathroom_number,
                 bedroom_locked,
                 price,
                 address1,

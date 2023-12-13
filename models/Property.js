@@ -17,6 +17,14 @@ const propertySchema = new mongoose.Schema({
         type: Number,
         default: 1,
     },
+    verified: {
+        type: Number,
+        default: 0,
+    },
+    is_available: {
+        type: Number,
+        default: 0,
+    },
     name: {
         type: String,
         required: true,
@@ -37,6 +45,9 @@ const propertySchema = new mongoose.Schema({
         type: Number,
     },
     beds_number: {
+        type: Number,
+    },
+    bathroom_number: {
         type: Number,
     },
     bedroom_locked: {
