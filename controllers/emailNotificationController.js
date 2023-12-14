@@ -279,8 +279,7 @@ exports.sendRequestInfo = async (req, res) => {
                             <h2>Hello,</h2>
                             <p>${fullname} with email ${from_email} would like to request information regarding the property you listed.</p>
                             <p>${fullname} can be reached through ${phone} for more details.</p>
-                            <p>Best regards,</p>
-                            <p>Your Name</p>
+                            <p>Best regards</p>
                         </div>
                     </body>
                 </html>
