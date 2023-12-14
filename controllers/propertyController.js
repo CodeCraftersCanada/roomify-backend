@@ -1,6 +1,7 @@
 const Property = require('../models/Property');
 const PropertyType = require("../models/PropertyStatus");
 const User = require("../models/User");
+const emailController = require('../controllers/emailNotificationController');
 
 exports.createProperty = async (req, res) => {
     const {
@@ -68,6 +69,26 @@ exports.createProperty = async (req, res) => {
             );
 
             console.log("Property and Users relationship established successfully.");
+            console.log(updatedUser.email);
+
+            await emailController.sendPropertyCreation({
+                to_email: updatedUser.email,
+                fullname: updatedUser.fullname,
+                name: name,
+                description: description,
+                property_name: property_name,
+                shared_name: shared_name,
+                guest_number: guest_number,
+                bedroom_number: bedroom_number,
+                beds_number: beds_number,
+                bathroom_number: bathroom_number,
+                address1: address1,
+                address2: address2,
+                city: city,
+                province: province,
+                country: country,
+                postal_code: postal_code
+            });
 
             res.status(200).json({
                 status: true,
@@ -79,7 +100,7 @@ exports.createProperty = async (req, res) => {
             console.error(updateErr);
             res.status(500).json({
                 success: false,
-                message: "Error creating property",
+                message: updateErr.message,
             });
         }
     } catch (error) {
