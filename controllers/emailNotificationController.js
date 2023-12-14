@@ -328,7 +328,7 @@ exports.sendUserUpdate = async (userDetails) => {
 };
 
 exports.sendRequestInfo = async (req, res) => {
-    const { fullname, from_email, to_email, phone } = req.body;
+    const { landlord, fullname, from_email, to_email, phone } = req.body;
 
     try {
         // Send email notification using nodemailer and Mailtrap
@@ -372,7 +372,7 @@ exports.sendRequestInfo = async (req, res) => {
                     </head>
                     <body>
                         <div class="container">
-                            <h2>Hello,</h2>
+                            <h2>Hello ${landlord},</h2>
                             <p>${fullname} with email ${from_email} would like to request information regarding the property you listed.</p>
                             <p>${fullname} can be reached through ${phone} for more details.</p>
                             <p>Thank you.</p>
