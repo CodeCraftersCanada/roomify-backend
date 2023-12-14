@@ -221,6 +221,8 @@ exports.updatePropertyById = async (req, res) => {
             { new: true } // Return the updated document
         );
 
+        console.log("updatedProperty: ", updatedProperty);
+
         if (!updatedProperty) {
             return res.status(404).json({
                 status: false,
@@ -228,6 +230,34 @@ exports.updatePropertyById = async (req, res) => {
             });
         }
 
+        // Assuming you have a User model
+        const user = await User.findById(updatedProperty.user_id);
+
+        // Check if the property is verified (has a value of 1 or 2)
+        if (verified === 1 || verified === 2) {
+
+            // Send email notification only if verified has a value of 1 or 2
+            await emailController.sendPropertyUpdate({
+                to_email: user.email,
+                fullname: user.fullname,
+                verified: verified,
+                verified_status: verified === 1 ? "Approved" : "Rejected",
+                name: updatedProperty.name,
+                description: updatedProperty.description,
+                property_name: updatedProperty.property_name,
+                shared_name: updatedProperty.shared_name,
+                guest_number: updatedProperty.guest_number,
+                bedroom_number: updatedProperty.bedroom_number,
+                beds_number: updatedProperty.beds_number,
+                bathroom_number: updatedProperty.bathroom_number,
+                address1: updatedProperty.address1,
+                address2: updatedProperty.address2,
+                city: updatedProperty.city,
+                province: updatedProperty.province,
+                country: updatedProperty.country,
+                postal_code: updatedProperty.postal_code
+            });
+        }
 
         res.status(200).json({
             status: true,
