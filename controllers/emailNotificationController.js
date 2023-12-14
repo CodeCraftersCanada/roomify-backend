@@ -217,7 +217,7 @@ exports.sendPropertyUpdate = async (propertyDetails) => {
         };
 
         const sendEmail = await transporter.sendMail(mailOptions);
-        
+
         return {
             status: true,
             message: 'Email notification sent successfully.'
@@ -286,8 +286,6 @@ exports.sendRequestInfo = async (req, res) => {
                 </html>
             `,
         };
-
-        await transporter.sendMail(mailOptions);
 
         await transporter.sendMail(mailOptions);
 
