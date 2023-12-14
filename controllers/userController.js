@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 const credential = require("../config/firebaseKey.json");
 const bcrypt = require('bcrypt');
 const UserType = require('../models/UserType');
+const emailController = require('../controllers/emailNotificationController');
 
 admin.initializeApp({
     credential: admin.credential.cert(credential)
@@ -239,6 +240,16 @@ exports.editUser = async (req, res) => {
             return res.status(404).json({
                 status: false,
                 message: 'User not found.',
+            });
+        }
+
+        if (user.verified === 1 || user.verified === 2) {
+
+            // Send email notification only if verified has a value of 1 or 2
+            await emailController.sendUserUpdate({
+                to_email: updatedUser.email,
+                fullname: updatedUser.fullname,
+                verified: user.verified
             });
         }
 
